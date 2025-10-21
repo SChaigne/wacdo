@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+
+<head th:replace="~{layout :: page_head}"></head>
+
+<body>
+
+	<nav th:replace="~{layout :: page_navbar}"></nav>
+
+	<h1>La liste des restaurants</h1>
+
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Nom</th>
+				<th>Adresse</th>
+				<th>Code Postal</th>
+				<th>Ville</th>
+				<th>
+					
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="restaurant, iterStat : ${restaurants}">
+				<td th:text="${restaurant.name}"></td>
+				<td th:text="${restaurant.adress}"></td>
+				<td th:text="${restaurant.zipCode}"></td>
+				<td th:text="${restaurant.city}"></td>
+				<td>
+				    <a th:href="@{/restaurants/{id}(id=${iterStat.index})}">
+				        <button type="button" class="btn btn-dark">Detail</button>
+				    </a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<footer th:replace="~{layout :: page_footer}"></footer>
+</body>
+
+</html>

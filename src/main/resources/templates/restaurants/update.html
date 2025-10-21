@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+
+<head th:replace="~{layout :: page_head}"></head>
+
+<body>
+
+	<nav th:replace="~{layout :: page_navbar}"></nav>
+
+	<button type="button" class="btn btn-secondary" onclick="history.back()">Retour</button>
+
+	<h1>Modification du restaurant : <span th:text="${restaurant.name}"></span></h1>
+
+
+	<div class="container card" style="width: 40%; padding: 12px;">
+		<div class="mb-3">
+			<label for="restaurantName" class="form-label">Nom du restaurant :</label>
+			<input type="text" class="form-control" id="restaurantName" placeholder="ex: Bistro de la gare"
+				th:value="${restaurant.name}">
+		</div>
+		<div class="mb-3">
+			<label for="restaurantAdress" class="form-label">Adresse :</label>
+			<input type="text" class="form-control" id="restaurantAdress" placeholder="ex: 8 rue des frenes"
+				th:value="${restaurant.adress}">
+		</div>
+		<div class="mb-3">
+			<label for="restaurantZipCode" class="form-label">Code postale :</label>
+			<input type="text" class="form-control" id="restaurantZipCode" placeholder="ex: 75120"
+				th:value="${restaurant.zipCode}">
+		</div>
+		<div class="mb-3">
+			<label for="restaurantCity" class="form-label">Ville :</label>
+			<input type="text" class="form-control" id="restaurantCity" placeholder="ex: Paris"
+				th:value="${restaurant.city}">
+		</div>
+	</div>
+
+	<footer th:replace="~{layout :: page_footer}"></footer>
+</body>
+
+</html>
