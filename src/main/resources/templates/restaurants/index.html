@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+
+<head th:replace="~{layout :: page_head}"></head>
+
+<body>
+
+	<nav th:replace="~{layout :: page_navbar}"></nav>
+
+	<h1>La liste des restaurants</h1>
+
+	<a class="btn btn-primary" href="/restaurants/create">Creer un restaurant</a>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Nom</th>
+				<th>Adresse</th>
+				<th>Code Postal</th>
+				<th>Ville</th>
+				<th>
+					
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="restaurant : ${restaurants}">
+				<td th:text="${restaurant.name}"></td>
+				<td th:text="${restaurant.adress}"></td>
+				<td th:text="${restaurant.zipCode}"></td>
+				<td th:text="${restaurant.city}"></td>
+				<td>
+				    <a class="btn btn-info" th:href="@{restaurants/{id}(id=${restaurant.id})}">
+				        Detail
+				    </a>
+					<a  class="btn btn-primary" th:href="@{restaurants/update/{id}(id=${restaurant.id})}" >
+						Modifier
+					</a>
+					<a  class="btn btn-danger">
+						Supprimer
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<footer th:replace="~{layout :: page_footer}"></footer>
+</body>
+
+</html>
