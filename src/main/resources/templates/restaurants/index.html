@@ -9,6 +9,10 @@
 
 	<h1>La liste des restaurants</h1>
 
+<<<<<<< HEAD
+=======
+	<a class="btn btn-primary" href="/restaurants/create">Creer un restaurant</a>
+>>>>>>> restore-commit
 
 	<table class="table">
 		<thead>
@@ -23,15 +27,31 @@
 			</tr>
 		</thead>
 		<tbody>
+<<<<<<< HEAD
 			<tr th:each="restaurant, iterStat : ${restaurants}">
+=======
+			<tr th:each="restaurant : ${restaurants}">
+>>>>>>> restore-commit
 				<td th:text="${restaurant.name}"></td>
 				<td th:text="${restaurant.adress}"></td>
 				<td th:text="${restaurant.zipCode}"></td>
 				<td th:text="${restaurant.city}"></td>
 				<td>
+<<<<<<< HEAD
 				    <a th:href="@{/restaurants/{id}(id=${iterStat.index})}">
 				        <button type="button" class="btn btn-dark">Detail</button>
 				    </a>
+=======
+				    <a class="btn btn-info" th:href="@{restaurants/{id}(id=${restaurant.id})}">
+				        Detail
+				    </a>
+					<a  class="btn btn-primary" th:href="@{restaurants/update/{id}(id=${restaurant.id})}" >
+						Modifier
+					</a>
+					<a  class="btn btn-danger">
+						Supprimer
+					</a>
+>>>>>>> restore-commit
 				</td>
 			</tr>
 		</tbody>

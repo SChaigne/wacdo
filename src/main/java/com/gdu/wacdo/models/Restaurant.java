@@ -2,6 +2,11 @@ package com.gdu.wacdo.models;
 
 import java.util.Date;
 
+<<<<<<< HEAD
+=======
+import org.hibernate.annotations.CreationTimestamp;
+
+>>>>>>> restore-commit
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +21,12 @@ public class Restaurant {
 	private String adress;
 	private String zipCode;
 	private String city;
+<<<<<<< HEAD
+=======
+	
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+>>>>>>> restore-commit
 	private Date createdAt;
 
 	public Restaurant() {
@@ -74,10 +85,13 @@ public class Restaurant {
 		return createdAt;
 	}
 
+<<<<<<< HEAD
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
+=======
+>>>>>>> restore-commit
 	@Override
 	public String toString() {
 		return "Restaurant{" + "nom='" + name + '\'' + ", adresse='" + adress + '\'' + ", codePostal='" + zipCode + '\''
