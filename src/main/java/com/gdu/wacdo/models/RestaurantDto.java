@@ -11,7 +11,7 @@ public class RestaurantDto {
 
 	@NotEmpty(message = "The zipCode is required")
 	private String zipCode;
-	
+
 	@NotEmpty(message= "The city is required")
 	private String city;
 

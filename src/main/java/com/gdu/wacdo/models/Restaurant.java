@@ -1,12 +1,10 @@
 package com.gdu.wacdo.models;
 
 import java.util.Date;
+import java.util.List;
 
-<<<<<<< HEAD
-=======
 import org.hibernate.annotations.CreationTimestamp;
 
->>>>>>> restore-commit
 import jakarta.persistence.*;
 
 @Entity
@@ -16,19 +14,20 @@ public class Restaurant {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	
+
 	private String name;
 	private String adress;
 	private String zipCode;
 	private String city;
-<<<<<<< HEAD
-=======
 	
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
->>>>>>> restore-commit
 	private Date createdAt;
 
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    private List<Affectation> affectations;
+    
 	public Restaurant() {
 	}
 
@@ -49,7 +48,7 @@ public class Restaurant {
 		return id;
 	}
 
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -81,14 +80,11 @@ public class Restaurant {
 	public Date getCreatedAt() {
 		return createdAt;
 	}
+	
+	public List<Affectation> getAffectations() { return affectations; }
+    public void setAffectations(List<Affectation> affectations) { this.affectations = affectations; }
 
-<<<<<<< HEAD
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
 
-=======
->>>>>>> restore-commit
 	@Override
 	public String toString() {
 		return "Restaurant{" + "nom='" + name + '\'' + ", adresse='" + adress + '\'' + ", codePostal='" + zipCode + '\''
