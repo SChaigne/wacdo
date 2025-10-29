@@ -19,7 +19,7 @@
 				<th>Code Postal</th>
 				<th>Ville</th>
 				<th>
-					
+
 				</th>
 			</tr>
 		</thead>
@@ -30,13 +30,14 @@
 				<td th:text="${restaurant.zipCode}"></td>
 				<td th:text="${restaurant.city}"></td>
 				<td>
-				    <a class="btn btn-info" th:href="@{restaurants/{id}(id=${restaurant.id})}">
-				        Detail
-				    </a>
-					<a  class="btn btn-primary" th:href="@{restaurants/update/{id}(id=${restaurant.id})}" >
+					<a class="btn btn-info" th:href="@{restaurants/{id}(id=${restaurant.id})}">
+						Detail
+					</a>
+					<a class="btn btn-primary" th:href="@{restaurants/update/{id}(id=${restaurant.id})}">
 						Modifier
 					</a>
-					<a  class="btn btn-danger" th:href="@{restaurants/delete/{id}(id=${restaurant.id})}" onclick="return confirm('Etes-vous sur de vouloir supprimer ?')">
+					<a class="btn btn-danger" th:href="@{restaurants/delete/{id}(id=${restaurant.id})}"
+						onclick="return confirm('Etes-vous sur de vouloir supprimer ?')">
 						Supprimer
 					</a>
 				</td>

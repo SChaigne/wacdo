@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+
+<head th:replace="~{layout :: page_head}"></head>
+
+<body>
+
+	<nav th:replace="~{layout :: page_navbar}"></nav>
+
+	<h1>La liste des collaborateurs</h1>
+
+	<a class="btn btn-primary" href="/collaborators/create">Creer un collaborateur</a>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Prenom</th>
+				<th>Nom</th>
+				<th>Adresse mail</th>
+				<th>Date d'embauche</th>
+				<th>
+
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="collaborator : ${collaborators}">
+				<td th:text="${collaborator.firstName}"></td>
+				<td th:text="${collaborator.lastName}"></td>
+				<td th:text="${collaborator.email}"></td>
+				<td th:text="${collaborator.hireDate}"></td>
+				<td>
+					<a class="btn btn-info" th:href="@{collaborators/{id}(id=${collaborator.id})}">
+						Detail
+					</a>
+					<a class="btn btn-primary" th:href="@{collaborators/update/{id}(id=${collaborator.id})}">
+						Modifier
+					</a>
+					<a class="btn btn-danger" th:href="@{collaborators/delete/{id}(id=${collaborator.id})}"
+						onclick="return confirm('Etes-vous sur de vouloir supprimer ?')">
+						Supprimer
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<footer th:replace="~{layout :: page_footer}"></footer>
+</body>
+
+</html>

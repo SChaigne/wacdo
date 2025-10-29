@@ -1,7 +1,9 @@
 package com.gdu.wacdo.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -27,11 +29,12 @@ public class Collaborator {
 	@NotEmpty
 	private String email;
 
-	private Date hireDate;
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private LocalDate hireDate;
 
 	private boolean isAdmin;
 
-	private String password; // only for admin users
+	private String password;
 
 	@OneToMany(mappedBy = "collaborator", cascade = CascadeType.ALL)
 	private List<Affectation> affectations;
@@ -69,11 +72,11 @@ public class Collaborator {
 		this.email = email;
 	}
 
-	public Date getHireDate() {
+	public LocalDate getHireDate() {
 		return hireDate;
 	}
 
-	public void setHireDate(Date hireDate) {
+	public void setHireDate(LocalDate hireDate) {
 		this.hireDate = hireDate;
 	}
 

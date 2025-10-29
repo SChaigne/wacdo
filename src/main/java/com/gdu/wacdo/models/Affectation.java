@@ -20,8 +20,8 @@ public class Affectation {
     private Restaurant restaurant;
 
     @ManyToOne
-    @JoinColumn(name = "function_id")
-    private Function function;
+    @JoinColumn(name = "job_id")
+    private Job job;
 
     private Date startDate;
 
@@ -37,8 +37,8 @@ public class Affectation {
     public Restaurant getRestaurant() { return restaurant; }
     public void setRestaurant(Restaurant restaurant) { this.restaurant = restaurant; }
 
-    public Function getFunction() { return function; }
-    public void setFunction(Function function) { this.function = function; }
+    public Job getFunction() { return job; }
+    public void setFunction(Job function) { this.job = function; }
 
     public Date getStartDate() { return startDate; }
     public void setStartDate(Date startDate) { this.startDate = startDate; }

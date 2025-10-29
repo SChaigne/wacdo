@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+
+<head th:replace="~{layout :: page_head}"></head>
+
+<body>
+
+	<nav th:replace="~{layout :: page_navbar}"></nav>
+
+	<button type="button" class="btn btn-secondary" onclick="history.back()">Retour</button>
+
+	<h1>Les details du restaurant <span th:text="${collaborator.firstName}"></span></h1>
+
+	<p th:text="${collaborator.firstName}">
+	<p th:text="${collaborator.lastName}"></p>
+	<p th:text="${collaborator.email}"></p>
+	<p th:text="${collaborator.hireDate}"></p>
+
+	<footer th:replace="~{layout :: page_footer}"></footer>
+</body>
+
+</html>
