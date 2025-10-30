@@ -29,8 +29,7 @@ public class RestaurantController {
 	public String restaurants(Model model) {
 		List<Restaurant> listOfRestaurants = restaurantsRepository.findAll();
 
-		model.addAttribute("restaurants", listOfRestaurants); // restaurants , ici on associe a la variable dans mon
-																// template
+		model.addAttribute("restaurants", listOfRestaurants); // restaurants , ici on associe a la variable dans mon											// template
 
 		return "restaurants/index"; // template thymeleaf
 	}

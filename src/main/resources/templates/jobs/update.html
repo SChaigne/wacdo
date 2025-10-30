@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+
+<head th:replace="~{layout :: page_head}"></head>
+
+<body>
+
+	<nav th:replace="~{layout :: page_navbar}"></nav>
+
+	<h1>Modification du job : <span th:text="${jobDto.name}"></span></h1>
+
+	<form method="post" th:object="${jobDto}">
+		<div class="container card" style="width: 40%; padding: 12px;">
+			<div class="mb-3">
+				<label for="jobName" class="form-label">Intitule de la fonction :</label>
+				<div>
+					<input type="text" class="form-control" id="jobName" placeholder="ex: Albert"
+						th:field="*{name}">
+					<p th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></p>
+				</div>
+			</div>
+
+			<div class="mx-auto">
+				<button type="submit" class="btn btn-primary">Modifier</button>
+				<a class="btn btn-outline-primary" href="/jobs">Annuler</a>
+			</div>
+		</div>
+	</form>
+
+
+	<footer th:replace="~{layout :: page_footer}"></footer>
+</body>
+
+</html>

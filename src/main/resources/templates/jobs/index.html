@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+
+<head th:replace="~{layout :: page_head}"></head>
+
+<body>
+
+	<nav th:replace="~{layout :: page_navbar}"></nav>
+
+	<h1>La liste des fonctions</h1>
+
+	<a class="btn btn-primary" href="/jobs/create">Creer une fonction</a>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Nom de la fonction</th>
+				<th>Cree le</th>	
+				<th>Modifier le</th>			
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="job : ${jobs}">
+				<td th:text="${job.name}"></td>
+				<td th:text="${job.createdAt}"></td>
+				<td th:text="${job.updatedAt}"></td>
+				<td>
+					<a class="btn btn-info" th:href="@{jobs/{id}(id=${job.id})}">
+						Detail
+					</a>
+					<a class="btn btn-primary" th:href="@{jobs/update/{id}(id=${job.id})}">
+						Modifier
+					</a>
+					<a class="btn btn-danger" th:href="@{jobs/delete/{id}(id=${job.id})}"
+						onclick="return confirm('Etes-vous sur de vouloir supprimer ?')">
+						Supprimer
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<footer th:replace="~{layout :: page_footer}"></footer>
+</body>
+
+</html>

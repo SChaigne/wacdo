@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+
+<head th:replace="~{layout :: page_head}"></head>
+
+<body>
+
+	<nav th:replace="~{layout :: page_navbar}"></nav>
+
+	<button type="button" class="btn btn-secondary" onclick="history.back()">Retour</button>
+
+	<h1>Creation d'une fonction :</h1>
+
+
+	<form method="post" th:object="${jobDto}">
+		<div class="container card" style="width: 40%; padding: 12px;">
+			<div class="mb-3">
+				<label for="jobName" class="form-label">Prenom :</label>
+				<div>
+					<input type="text" class="form-control" id="jobName" placeholder="ex: Agent polyvalent"
+						th:field="*{name}">
+					<p th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></p>
+				</div>
+			</div>
+
+			
+			<div class="mx-auto">
+				<button type="submit" class="btn btn-primary">Ajouter</button>
+				<a class="btn btn-outline-primary" href="/jobs">Annuler</a>
+			</div>
+		</div>
+	</form>
+
+	<footer th:replace="~{layout :: page_footer}"></footer>
+</body>
+
+</html>
