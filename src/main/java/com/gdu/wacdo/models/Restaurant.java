@@ -12,26 +12,23 @@ import jakarta.persistence.*;
 public class Restaurant {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	private String name;
 	private String adress;
 	private String zipCode;
 	private String city;
-	
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
+
+	@CreationTimestamp
+	@Column(name = "created_at", updatable = false)
 	private Date createdAt;
 
+	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+	private List<Affectation> affectations;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<Affectation> affectations;
-    
 	public Restaurant() {
 	}
-
-
 
 	public Restaurant(String name, String adress, String zipCode, String city) {
 		this.name = name;
@@ -44,10 +41,9 @@ public class Restaurant {
 		return name;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
@@ -80,10 +76,14 @@ public class Restaurant {
 	public Date getCreatedAt() {
 		return createdAt;
 	}
-	
-	public List<Affectation> getAffectations() { return affectations; }
-    public void setAffectations(List<Affectation> affectations) { this.affectations = affectations; }
 
+	public List<Affectation> getAffectations() {
+		return affectations;
+	}
+
+	public void setAffectations(List<Affectation> affectations) {
+		this.affectations = affectations;
+	}
 
 	@Override
 	public String toString() {

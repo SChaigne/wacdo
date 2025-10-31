@@ -34,14 +34,14 @@ public class CollaboratorController {
 	}
 
 	@GetMapping("/{id}")
-	public String collaboratorById(Model model, @PathVariable int id) {
+	public String collaboratorById(Model model, @PathVariable Long id) {
 		Collaborator collaborator = collaboratorRepository.findById(id).get();
 		model.addAttribute("collaborator", collaborator);
 		return "collaborators/detail";
 	}
 
 	@GetMapping("update/{id}")
-	public String updateCollaboratorPage(Model model, @PathVariable int id) {
+	public String updateCollaboratorPage(Model model, @PathVariable Long id) {
 		Collaborator collaborator = collaboratorRepository.findById(id).get();
 
 		CollaboratorDto collabDto = new CollaboratorDto();
@@ -54,7 +54,7 @@ public class CollaboratorController {
 	}
 
 	@PostMapping("update/{id}")
-	public String updateCollaborator(Model model, @PathVariable int id,
+	public String updateCollaborator(Model model, @PathVariable Long id,
 			@Valid @ModelAttribute CollaboratorDto collaboratorDto, BindingResult result) {
 		if (result.hasErrors()) {
 			model.addAttribute("restaurantDto", collaboratorDto);
@@ -95,7 +95,7 @@ public class CollaboratorController {
 	}
 	
 	@GetMapping("/delete/{id}")
-	public String deleteCollaborator(@PathVariable int id) {
+	public String deleteCollaborator(@PathVariable Long id) {
 		collaboratorRepository.deleteById(id);
 
 		return "redirect:/collaborators";

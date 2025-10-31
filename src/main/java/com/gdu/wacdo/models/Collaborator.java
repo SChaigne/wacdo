@@ -129,4 +129,9 @@ public class Collaborator {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+	
+	public String getFullName() {
+		return this.firstName + this.lastName;
+	}
+	
 }

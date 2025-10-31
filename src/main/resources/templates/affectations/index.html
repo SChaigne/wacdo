@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+
+<head th:replace="~{layout :: page_head}"></head>
+
+<body>
+
+	<nav th:replace="~{layout :: page_navbar}"></nav>
+
+	<h1>La liste des collaborateurs</h1>
+
+	<a class="btn btn-primary" href="/affectations/create">Creer une affectation</a>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Restaurant d'affectation</th>
+				<th>Collaborateur affecte</th>
+				<th>Intitule du poste</th>
+				<th>Debut d'affectation</th>
+				<th>Fin d'affectation</th>
+				<th>
+
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="affectation : ${affectations}">
+				<td th:text="${affectation.restaurant.name}"></td>
+				<td th:text="${affectation.collaborator.lastName}"></td>
+				<td th:text="${affectation.job.name}"></td>
+
+				<td th:text="${affectation.startDate}"></td>
+				<td th:text="${affectation.endDate}"></td>
+				<td>
+					<a class="btn btn-info" th:href="@{affectations/{id}(id=${affectation.id})}">
+						Detail
+					</a>
+					<a class="btn btn-primary" th:href="@{affectations/update/{id}(id=${affectation.id})}">
+						Modifier
+					</a>
+					<a class="btn btn-danger" th:href="@{affectations/delete/{id}(id=${affectation.id})}"
+						onclick="return confirm('Etes-vous sur de vouloir supprimer ?')">
+						Supprimer
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<footer th:replace="~{layout :: page_footer}"></footer>
+</body>
+
+</html>

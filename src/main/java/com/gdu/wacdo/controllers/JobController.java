@@ -36,7 +36,7 @@ public class JobController {
 	}
 
 	@GetMapping("/{id}")
-	public String jobDetail(@PathVariable int id, Model model) {
+	public String jobDetail(@PathVariable Long id, Model model) {
 		try {
 			Job job = jobRepository.findById(id)
 					.orElseThrow(() -> new RuntimeException("job non trouvé avec id: " + id));
@@ -71,7 +71,7 @@ public class JobController {
 	}
 
 	@GetMapping("/update/{id}")
-	public String updateJobPage(@PathVariable int id, Model model) {
+	public String updateJobPage(@PathVariable Long id, Model model) {
 		try {
 			Job job = jobRepository.findById(id).get();
 
@@ -88,7 +88,7 @@ public class JobController {
 	}
 	
 	@PostMapping("/update/{id}")
-	public String updateJob(Model model, @PathVariable int id,
+	public String updateJob(Model model, @PathVariable Long id,
 			@Valid @ModelAttribute JobDto jobDto, BindingResult result) {
 
 		if (result.hasErrors()) {
@@ -106,7 +106,7 @@ public class JobController {
 	}
 
 	@GetMapping("/delete/{id}")
-	public String deleteJob(@PathVariable int id) {
+	public String deleteJob(@PathVariable Long id) {
 		jobRepository.deleteById(id);
 
 		return "redirect:/jobs";

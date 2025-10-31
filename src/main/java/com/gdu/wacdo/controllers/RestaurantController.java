@@ -35,7 +35,7 @@ public class RestaurantController {
 	}
 
 	@GetMapping("/{id}")
-	public String restaurantDetail(@PathVariable int id, Model model) {
+	public String restaurantDetail(@PathVariable Long id, Model model) {
 		try {
 			Restaurant restaurant = restaurantsRepository.findById(id)
 					.orElseThrow(() -> new RuntimeException("Restaurant non trouvé avec id: " + id));
@@ -72,7 +72,7 @@ public class RestaurantController {
 	}
 
 	@GetMapping("/update/{id}")
-	public String updateRestaurantPage(@PathVariable int id, Model model) {
+	public String updateRestaurantPage(@PathVariable Long id, Model model) {
 		try {
 			Restaurant restaurant = restaurantsRepository.findById(id).get();
 
@@ -92,7 +92,7 @@ public class RestaurantController {
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateRestaurant(Model model, @PathVariable int id,
+	public String updateRestaurant(Model model, @PathVariable Long id,
 			@Valid @ModelAttribute RestaurantDto restaurantDto, BindingResult result) {
 
 		if (result.hasErrors()) {
@@ -112,7 +112,7 @@ public class RestaurantController {
 	}
 
 	@GetMapping("/delete/{id}")
-	public String deleteRestaurant(@PathVariable int id) {
+	public String deleteRestaurant(@PathVariable Long id) {
 		restaurantsRepository.deleteById(id);
 
 		return "redirect:/restaurants";
