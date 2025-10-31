@@ -36,12 +36,11 @@
 					<a class="btn btn-info" th:href="@{affectations/{id}(id=${affectation.id})}">
 						Detail
 					</a>
-					<a class="btn btn-primary" th:href="@{affectations/update/{id}(id=${affectation.id})}">
-						Modifier
-					</a>
-					<a class="btn btn-danger" th:href="@{affectations/delete/{id}(id=${affectation.id})}"
-						onclick="return confirm('Etes-vous sur de vouloir supprimer ?')">
-						Supprimer
+				
+					<a class="btn btn-danger" th:if="${affectation.endDate == null}"
+						th:href="@{affectations/end/{id}(id=${affectation.id})}"
+						onclick="return confirm(`Etes-vous sur de vouloir mettre fin a l'affectation ?`)">
+						Fin d'affectation
 					</a>
 				</td>
 			</tr>

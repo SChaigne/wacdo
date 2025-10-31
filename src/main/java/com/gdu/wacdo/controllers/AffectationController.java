@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,7 +37,21 @@ public class AffectationController {
 
 		model.addAttribute("affectations", listOfAffectations);
 
-		return "affectations/index"; // template thymeleaf
+		return "affectations/index";
+	}
+	
+	@GetMapping("/{id}")
+	public String affectationDetail(@PathVariable Long id, Model model) {
+		try {
+			Affectation affectation = affectationsRepository.findById(id)
+					.orElseThrow(() -> new RuntimeException("affectation non trouvé avec id: " + id));
+
+			model.addAttribute("affectation", affectation);
+			return "affectations/detail";
+		} catch (Exception ex) {
+			System.out.println("Exception: " + ex.getMessage());
+			return "redirect:/affectations";
+		}
 	}
 
 	@GetMapping("/create")
@@ -60,7 +75,6 @@ public class AffectationController {
 		Job job = jobRepository.findById(affectationDto.getJobId())
 				.orElseThrow(() -> new IllegalArgumentException("Job not found"));
 
-		// Créer l'affectation
 		Affectation affectation = new Affectation();
 		affectation.setCollaborator(collaborator);
 		affectation.setRestaurant(restaurant);
@@ -68,6 +82,15 @@ public class AffectationController {
 		affectation.setStartDate(new Date());
 
 		affectationsRepository.save(affectation);
+
+		return "redirect:/affectations";
+	}
+	
+	@GetMapping("/end/{id}")
+	public String endAffectation(@PathVariable Long id) {
+		Affectation affect = affectationsRepository.findById(id).get();
+		affect.setEndDate(new Date());
+		affectationsRepository.save(affect);
 
 		return "redirect:/affectations";
 	}

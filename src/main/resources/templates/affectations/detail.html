@@ -9,12 +9,13 @@
 
 	<button type="button" class="btn btn-secondary" onclick="history.back()">Retour</button>
 
-	<h1>Les details du restaurant <span th:text="${collaborator.firstName}"></span></h1>
+	<h1>Les details de l'affectation</h1>
 
-	<p th:text="${collaborator.firstName}">
-	<p th:text="${collaborator.lastName}"></p>
-	<p th:text="${collaborator.email}"></p>
-	<p th:text="${collaborator.hireDate}"></p>
+	<p th:text="${affectation.collaborator.firstName + ' ' + affectation.collaborator.lastName}">
+	<p th:text="${affectation.restaurant.name}"></p>
+	<p th:text="${affectation.job.name}"></p>
+	<p th:text="${affectation.startDate}"></p>
+	<p th:text="${affectation.endDate}"></p>
 
 	<footer th:replace="~{layout :: page_footer}"></footer>
 </body>
