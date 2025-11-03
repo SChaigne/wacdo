@@ -1,21 +1,71 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{layout :: page_head}"></head>
 
 <body>
 
-	<nav th:replace="~{layout :: page_navbar}"></nav>
+<nav th:replace="~{layout :: page_navbar}"></nav>
 
-	<button type="button" class="btn btn-secondary" onclick="history.back()">Retour</button>
+<button type="button" class="btn btn-secondary" onclick="history.back()">Retour</button>
 
-	<h1>Les details du restaurant <span th:text="${restaurant.name}"></span></h1>
+<h1>Détails du restaurant : <span th:text="${restaurant.name}"></span></h1>
 
-	<p th:text="${restaurant.adress}">
-	<p th:text="${restaurant.zipCode}"></p>
-	<p th:text="${restaurant.city}"></p>
+<p><strong>Adresse :</strong> <span th:text="${restaurant.adress}"></span></p>
+<p><strong>Code postal :</strong> <span th:text="${restaurant.zipCode}"></span></p>
+<p><strong>Ville :</strong> <span th:text="${restaurant.city}"></span></p>
 
-	<footer th:replace="~{layout :: page_footer}"></footer>
+<hr>
+
+<h2>Collaborateurs actuellement en poste</h2>
+
+<form method="get" th:action="@{/restaurants/{id}(id=${restaurant.id})}" class="mb-3">
+    <div class="row g-2">
+        <div class="col-md-3">
+            <input type="text" name="name" class="form-control" placeholder="Nom ou prénom"
+                   th:value="${name}">
+        </div>
+        <div class="col-md-3">
+            <select name="jobId" class="form-select">
+                <option value="">-- Tous les postes --</option>
+                <option th:each="j : ${jobs}" th:value="${j.id}"
+                        th:text="${j.name}"
+                        th:selected="${jobId} == ${j.id}"></option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="startDate" class="form-control"
+                   th:value="${#dates.format(startDate, 'yyyy-MM-dd')}">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+            <a th:href="@{/restaurants/{id}(id=${restaurant.id})}" class="btn btn-outline-secondary">Réinitialiser</a>
+        </div>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Poste</th>
+        <th>Date de début</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="a : ${affectations}">
+        <td th:text="${a.collaborator.lastName}"></td>
+        <td th:text="${a.collaborator.firstName}"></td>
+        <td th:text="${a.job.name}"></td>
+        <td th:text="${#dates.format(a.startDate, 'dd/MM/yyyy')}"></td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(affectations)}">
+        <td colspan="4" class="text-center text-muted">Aucun collaborateur en poste pour le moment.</td>
+    </tr>
+    </tbody>
+</table>
+
+<footer th:replace="~{layout :: page_footer}"></footer>
 </body>
-
 </html>
