@@ -57,9 +57,9 @@ public class AffectationController {
 	@GetMapping("/create")
 	public String createAffectationPage(Model model) {
 		model.addAttribute("affectationDto", new AffectationDto());
-	    model.addAttribute("collaborators", collaboratorRepository.findAll());
-	    model.addAttribute("restaurants", restaurantsRepository.findAll());
-	    model.addAttribute("jobs", jobRepository.findAll());
+		model.addAttribute("collaborators", collaboratorRepository.findAll());
+		model.addAttribute("restaurants", restaurantsRepository.findAll());
+		model.addAttribute("jobs", jobRepository.findAll());
 		return "affectations/create";
 	}
 
@@ -85,7 +85,52 @@ public class AffectationController {
 
 		return "redirect:/affectations";
 	}
-	
+
+	@GetMapping("update/{id}")
+	public String updateAffectationPage(Model model, @PathVariable Long id) {
+		Affectation affectation = affectationsRepository.findById(id).get();
+
+		AffectationDto affectDto = new AffectationDto();
+		affectDto.setCollaboratorId(affectation.getCollaborator().getId());
+		affectDto.setRestaurantId(affectation.getRestaurant().getId());
+		affectDto.setJobId(affectation.getJob().getId());
+		affectDto.setUpdatedAt(new Date());
+
+		model.addAttribute("affectationDto", new AffectationDto());
+		model.addAttribute("collaborators", collaboratorRepository.findAll());
+		model.addAttribute("restaurants", restaurantsRepository.findAll());
+		model.addAttribute("jobs", jobRepository.findAll());
+		model.addAttribute("affectationDto", affectDto);
+		return "affectations/update";
+	}
+
+	@PostMapping("update/{id}")
+	public String updateAffectation(Model model, @PathVariable Long id,
+			@Valid @ModelAttribute AffectationDto affectationDto, BindingResult result) {
+		if (result.hasErrors()) {
+			model.addAttribute("affectationDto", affectationDto);
+			return "affectations/update";
+		}
+
+		Affectation affectToSave = affectationsRepository.findById(id).get();
+		Collaborator collaborator = collaboratorRepository.findById(affectationDto.getCollaboratorId())
+				.orElseThrow(() -> new RuntimeException("Collaborator not found"));
+		Restaurant restaurant = restaurantsRepository.findById(affectationDto.getRestaurantId())
+				.orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
+		Job job = jobRepository.findById(affectationDto.getJobId())
+				.orElseThrow(() -> new IllegalArgumentException("Job not found"));
+
+		affectToSave.setCollaborator(collaborator);
+		affectToSave.setCollaborator(collaborator);
+		affectToSave.setRestaurant(restaurant);
+		affectToSave.setJob(job);
+		affectToSave.setUpdatedAt(new Date());
+
+		affectationsRepository.save(affectToSave);
+
+		return "redirect:/affectations";
+	}
+
 	@GetMapping("/end/{id}")
 	public String endAffectation(@PathVariable Long id) {
 		Affectation affect = affectationsRepository.findById(id).get();

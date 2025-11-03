@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+
+<head th:replace="~{layout :: page_head}"></head>
+
+<body>
+
+	<nav th:replace="~{layout :: page_navbar}"></nav>
+
+	<h1>Modification de l'affectation </h1>
+
+	<form method="post" th:object="${affectationDto}">
+		<div class="container card" style="width: 40%; padding: 12px;">
+			<div class="mb-3">
+				<label for="collaborator" class="form-label">Collaborateur :</label>
+
+				<select th:field="*{collaboratorId}" id="collaborator">
+					<option value="" disabled selected>-- Sélectionner un collaborateur --</option>
+					<option th:each="c : ${collaborators}" th:value="${c.id}"
+						th:text="${c.firstName + ' ' + c.lastName}">
+					</option>
+				</select>
+				<p th:if="${#fields.hasErrors('collaboratorId')}" class="text-danger" th:errors="*{collaboratorId}">
+				</p>
+			</div>
+
+			<div class="mb-3">
+				<label for="restaurantName" class="form-label">Restaurant :</label>
+				<select th:field="*{restaurantId}" id="restaurantName">
+					<option value="" disabled selected>-- Sélectionner un restaurant --</option>
+					<option th:each="r : ${restaurants}" th:value="${r.id}" th:text="${r.name}">
+					</option>
+				</select>
+				<p th:if="${#fields.hasErrors('restaurantId')}" class="text-danger" th:errors="*{restaurantId}"></p>
+			</div>
+
+			<div class="mb-3">
+				<label for="job">Fonction</label>
+				<select th:field="*{jobId}" id="job">
+					<option value="" disabled selected>-- Sélectionner un poste --</option>
+					<option th:each="j : ${jobs}" th:value="${j.id}" th:text="${j.name}">
+					</option>
+				</select>
+			</div>
+
+			<div class="mx-auto">
+				<button type="submit" class="btn btn-primary">Modifier</button>
+				<a class="btn btn-outline-primary" href="/collaborators">Annuler</a>
+			</div>
+		</div>
+	</form>
+
+
+	<footer th:replace="~{layout :: page_footer}"></footer>
+</body>
+
+</html>
