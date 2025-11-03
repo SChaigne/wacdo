@@ -1,22 +1,109 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
-
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout :: page_head}"></head>
 
 <body>
 
-	<nav th:replace="~{layout :: page_navbar}"></nav>
+<nav th:replace="~{layout :: page_navbar}"></nav>
 
-	<button type="button" class="btn btn-secondary" onclick="history.back()">Retour</button>
+<div class="container mt-4">
 
-	<h1>Les details du restaurant <span th:text="${collaborator.firstName}"></span></h1>
+    <button type="button" class="btn btn-secondary mb-3" onclick="history.back()">Retour</button>
 
-	<p th:text="${collaborator.firstName}">
-	<p th:text="${collaborator.lastName}"></p>
-	<p th:text="${collaborator.email}"></p>
-	<p th:text="${collaborator.hireDate}"></p>
+    <h1>Détail du collaborateur</h1>
+    <hr>
 
-	<footer th:replace="~{layout :: page_footer}"></footer>
+    <div class="mb-3">
+        <p><strong>Prénom :</strong> <span th:text="${collaborator.firstName}"></span></p>
+        <p><strong>Nom :</strong> <span th:text="${collaborator.lastName}"></span></p>
+        <p><strong>Email :</strong> <span th:text="${collaborator.email}"></span></p>
+        <p><strong>Date d'embauche :</strong> <span th:text="${collaborator.hireDate}"></span></p>
+    </div>
+
+    <hr>
+
+    <form th:action="@{/collaborators/{id}(id=${collaborator.id})}" method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label for="job" class="form-label">Filtrer par poste</label>
+            <select class="form-select" id="job" name="jobId">
+                <option value="">Tous les postes</option>
+                <option th:each="job : ${jobs}"
+                        th:value="${job.id}"
+                        th:text="${job.name}"
+                        th:selected="${job.id == selectedJobId}"></option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label for="startDate" class="form-label">Filtrer par date de début</label>
+            <input type="date" id="startDate" name="startDate" class="form-control"
+                   th:value="${selectedStartDate}">
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end gap-2">
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+            <a th:href="@{/collaborators/{id}(id=${collaborator.id})}" class="btn btn-secondary">Réinitialiser</a>
+        </div>
+    </form>
+
+    <h3>Affectations en cours</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Restaurant</th>
+            <th>Poste</th>
+            <th>Date de début</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="aff : ${currentAffectations}">
+            <td th:text="${aff.restaurant.name}"></td>
+            <td th:text="${aff.job.name}"></td>
+            <td th:text="${aff.startDate}"></td>
+            <td>
+                <a th:href="@{/affectations/update/{id}(id=${aff.id})}" class="btn btn-warning btn-sm">Modifier</a>
+                <a th:href="@{/affectations/end/{id}(id=${aff.id})}" class="btn btn-danger btn-sm"
+                   th:if="${aff.endDate == null}">Fin d'affectation</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(currentAffectations)}">
+            <td colspan="4" class="text-center">Aucune affectation en cours</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Historique des affectations</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Restaurant</th>
+            <th>Poste</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="aff : ${pastAffectations}">
+            <td th:text="${aff.restaurant.name}"></td>
+            <td th:text="${aff.job.name}"></td>
+            <td th:text="${aff.startDate}"></td>
+            <td th:text="${aff.endDate}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(pastAffectations)}">
+            <td colspan="4" class="text-center">Aucune affectation passée</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="mt-4">
+        <a th:href="@{/affectations/create(collaboratorId=${collaborator.id})}" class="btn btn-success">
+            Affecter à un nouveau poste
+        </a>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: page_footer}"></footer>
+
 </body>
-
 </html>
