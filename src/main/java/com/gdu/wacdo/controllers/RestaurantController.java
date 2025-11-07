@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gdu.wacdo.dtos.RestaurantDto;
 import com.gdu.wacdo.models.Affectation;
 import com.gdu.wacdo.models.Restaurant;
-import com.gdu.wacdo.models.RestaurantDto;
-import com.gdu.wacdo.services.AffectationRepository;
-import com.gdu.wacdo.services.JobRepository;
-import com.gdu.wacdo.services.RestaurantsRepository;
+import com.gdu.wacdo.services.RestaurantService;
 
 import jakarta.validation.Valid;
 
@@ -28,116 +26,97 @@ import jakarta.validation.Valid;
 @RequestMapping("/restaurants")
 public class RestaurantController {
 
-	@Autowired
-	private RestaurantsRepository restaurantsRepository;
-	@Autowired
-	private JobRepository jobRepository;
-	@Autowired
-	private AffectationRepository affectationsRepository;
+    @Autowired
+    private RestaurantService restaurantService;
 
-	@GetMapping({ "", "/" })
-	public String restaurants(@RequestParam(required = false) String name,
-			@RequestParam(required = false) String zipCode, @RequestParam(required = false) String city, Model model) {
+    @GetMapping({ "", "/" })
+    public String restaurants(@RequestParam(required = false) String name,
+                              @RequestParam(required = false) String zipCode,
+                              @RequestParam(required = false) String city,
+                              Model model) {
 
-		List<Restaurant> restaurants = restaurantsRepository.searchRestaurants(name, zipCode, city);
+        List<Restaurant> restaurants = restaurantService.searchRestaurants(name, zipCode, city);
 
-		model.addAttribute("restaurants", restaurants);
-		model.addAttribute("name", name);
-		model.addAttribute("zipCode", zipCode);
-		model.addAttribute("city", city);
+        model.addAttribute("restaurants", restaurants);
+        model.addAttribute("name", name);
+        model.addAttribute("zipCode", zipCode);
+        model.addAttribute("city", city);
 
-		return "restaurants/index";
-	}
+        return "restaurants/index";
+    }
 
-	@GetMapping("/{id}")
-	public String restaurantDetail(@PathVariable Long id, @RequestParam(required = false) Long jobId,
-			@RequestParam(required = false) String name,
-			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, Model model) {
+    @GetMapping("/{id}")
+    public String restaurantDetail(@PathVariable Long id,
+                                   @RequestParam(required = false) Long jobId,
+                                   @RequestParam(required = false) String name,
+                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                                   Model model) {
 
-		Restaurant restaurant = restaurantsRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Restaurant not found"));
+        Restaurant restaurant = restaurantService.getRestaurantById(id);
+        List<Affectation> affectations = restaurantService.getAffectations(id, jobId, name, startDate);
 
-		List<Affectation> affectations = affectationsRepository.findCurrentAffectationsByRestaurant(id, jobId, name,
-				startDate);
+        model.addAttribute("restaurant", restaurant);
+        model.addAttribute("affectations", affectations);
+        model.addAttribute("jobs", restaurantService.getAllJobs());
+        model.addAttribute("jobId", jobId);
+        model.addAttribute("name", name);
+        model.addAttribute("startDate", startDate);
 
-		model.addAttribute("restaurant", restaurant);
-		model.addAttribute("affectations", affectations);
-		model.addAttribute("jobs", jobRepository.findAll());
-		model.addAttribute("jobId", jobId);
-		model.addAttribute("name", name);
-		model.addAttribute("startDate", startDate);
+        return "restaurants/detail";
+    }
 
-		return "restaurants/detail";
-	}
+    @GetMapping("/create")
+    public String createRestaurantPage(Model model) {
+        model.addAttribute("restaurantDto", new RestaurantDto());
+        return "restaurants/create";
+    }
 
-	@GetMapping("/create")
-	public String createRestaurantPage(Model model) {
-		model.addAttribute("restaurantDto", new RestaurantDto());
-		return "restaurants/create";
-	}
+    @PostMapping("/create")
+    public String createRestaurant(@Valid @ModelAttribute RestaurantDto restaurantDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return "restaurants/create";
+        }
 
-	@PostMapping("/create")
-	public String createRestaurant(@Valid @ModelAttribute RestaurantDto restaurantDto, BindingResult result) {
-		if (result.hasErrors()) {
-			return "restaurants/create";
-		}
+        restaurantService.createRestaurant(restaurantDto);
+        return "redirect:/restaurants";
+    }
 
-		Restaurant restaurant = new Restaurant();
-		restaurant.setAdress(restaurantDto.getAdress());
-		restaurant.setCity(restaurantDto.getCity());
-		restaurant.setName(restaurantDto.getName());
-		restaurant.setZipCode(restaurantDto.getZipCode());
+    @GetMapping("/update/{id}")
+    public String updateRestaurantPage(@PathVariable Long id, Model model) {
+        try {
+            Restaurant restaurant = restaurantService.getRestaurantById(id);
 
-		restaurantsRepository.save(restaurant);
+            RestaurantDto restaurantDto = new RestaurantDto();
+            restaurantDto.setAdress(restaurant.getAdress());
+            restaurantDto.setCity(restaurant.getCity());
+            restaurantDto.setName(restaurant.getName());
+            restaurantDto.setZipCode(restaurant.getZipCode());
 
-		return "redirect:/restaurants";
-	}
+            model.addAttribute("restaurantDto", restaurantDto);
+            return "restaurants/update";
 
-	@GetMapping("/update/{id}")
-	public String updateRestaurantPage(@PathVariable Long id, Model model) {
-		try {
-			Restaurant restaurant = restaurantsRepository.findById(id).get();
+        } catch (Exception ex) {
+            System.out.println("Exception: " + ex.getMessage());
+            return "redirect:/restaurants";
+        }
+    }
 
-			RestaurantDto restaurantDto = new RestaurantDto();
-			restaurantDto.setAdress(restaurant.getAdress());
-			restaurantDto.setCity(restaurant.getCity());
-			restaurantDto.setName(restaurant.getName());
-			restaurantDto.setZipCode(restaurant.getZipCode());
+    @PostMapping("/update/{id}")
+    public String updateRestaurant(Model model, @PathVariable Long id,
+                                   @Valid @ModelAttribute RestaurantDto restaurantDto, BindingResult result) {
 
-			model.addAttribute("restaurantDto", restaurantDto);
-			return "restaurants/update";
+        if (result.hasErrors()) {
+            model.addAttribute("restaurantDto", restaurantDto);
+            return "restaurants/update";
+        }
 
-		} catch (Exception ex) {
-			System.out.println("Exception: " + ex.getMessage());
-			return "redirect:/restaurants";
-		}
-	}
+        restaurantService.updateRestaurant(id, restaurantDto);
+        return "redirect:/restaurants";
+    }
 
-	@PostMapping("/update/{id}")
-	public String updateRestaurant(Model model, @PathVariable Long id,
-			@Valid @ModelAttribute RestaurantDto restaurantDto, BindingResult result) {
-
-		if (result.hasErrors()) {
-			model.addAttribute("restaurantDto", restaurantDto);
-			return "restaurants/update";
-		}
-
-		Restaurant restaurantToSave = restaurantsRepository.findById(id).get();
-		restaurantToSave.setAdress(restaurantDto.getAdress());
-		restaurantToSave.setCity(restaurantDto.getCity());
-		restaurantToSave.setName(restaurantDto.getName());
-		restaurantToSave.setZipCode(restaurantDto.getZipCode());
-
-		restaurantsRepository.save(restaurantToSave);
-
-		return "redirect:/restaurants";
-	}
-
-	@GetMapping("/delete/{id}")
-	public String deleteRestaurant(@PathVariable Long id) {
-		restaurantsRepository.deleteById(id);
-
-		return "redirect:/restaurants";
-	}
-
+    @GetMapping("/delete/{id}")
+    public String deleteRestaurant(@PathVariable Long id) {
+        restaurantService.deleteRestaurant(id);
+        return "redirect:/restaurants";
+    }
 }

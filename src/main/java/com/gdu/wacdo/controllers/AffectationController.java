@@ -1,9 +1,10 @@
 package com.gdu.wacdo.controllers;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,9 +13,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.gdu.wacdo.models.*;
-import com.gdu.wacdo.services.*;
+import com.gdu.wacdo.dtos.AffectationDto;
+import com.gdu.wacdo.models.Affectation;
+import com.gdu.wacdo.repositories.CollaboratorRepository;
+import com.gdu.wacdo.repositories.JobRepository;
+import com.gdu.wacdo.repositories.RestaurantsRepository;
+import com.gdu.wacdo.services.AffectationService;
 
 import jakarta.validation.Valid;
 
@@ -23,7 +29,7 @@ import jakarta.validation.Valid;
 public class AffectationController {
 
 	@Autowired
-	private AffectationRepository affectationsRepository;
+	private AffectationService affectationService;
 	@Autowired
 	private CollaboratorRepository collaboratorRepository;
 	@Autowired
@@ -32,20 +38,32 @@ public class AffectationController {
 	private JobRepository jobRepository;
 
 	@GetMapping({ "", "/" })
-	public String affectations(Model model) {
-		List<Affectation> listOfAffectations = affectationsRepository.findAll();
+	public String affectations(@RequestParam(required = false) Long jobId, @RequestParam(required = false) String city,
+			@RequestParam(required = false) String restaurantName,
+			@RequestParam(required = false) String collaboratorName,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+			Model model) {
 
-		model.addAttribute("affectations", listOfAffectations);
+		List<Affectation> affectations = affectationService.getFilteredAffectations(jobId, city, restaurantName,
+				collaboratorName, startDate, endDate);
+
+		model.addAttribute("affectations", affectations);
+		model.addAttribute("jobs", jobRepository.findAll());
+		model.addAttribute("selectedJobId", jobId);
+		model.addAttribute("selectedCity", city);
+		model.addAttribute("selectedRestaurantName", restaurantName);
+		model.addAttribute("selectedCollaborator", collaboratorName);
+		model.addAttribute("selectedStartDate", startDate);
+		model.addAttribute("selectedEndDate", endDate);
 
 		return "affectations/index";
 	}
-	
+
 	@GetMapping("/{id}")
 	public String affectationDetail(@PathVariable Long id, Model model) {
 		try {
-			Affectation affectation = affectationsRepository.findById(id)
-					.orElseThrow(() -> new RuntimeException("affectation non trouvé avec id: " + id));
-
+			Affectation affectation = affectationService.getAffectationById(id);
 			model.addAttribute("affectation", affectation);
 			return "affectations/detail";
 		} catch (Exception ex) {
@@ -68,39 +86,21 @@ public class AffectationController {
 		if (result.hasErrors()) {
 			return "affectations/create";
 		}
-		Collaborator collaborator = collaboratorRepository.findById(affectationDto.getCollaboratorId())
-				.orElseThrow(() -> new RuntimeException("Collaborator not found"));
-		Restaurant restaurant = restaurantsRepository.findById(affectationDto.getRestaurantId())
-				.orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
-		Job job = jobRepository.findById(affectationDto.getJobId())
-				.orElseThrow(() -> new IllegalArgumentException("Job not found"));
 
-		Affectation affectation = new Affectation();
-		affectation.setCollaborator(collaborator);
-		affectation.setRestaurant(restaurant);
-		affectation.setJob(job);
-		affectation.setStartDate(new Date());
-
-		affectationsRepository.save(affectation);
+		affectationService.createAffectation(affectationDto);
 
 		return "redirect:/affectations";
 	}
 
 	@GetMapping("update/{id}")
 	public String updateAffectationPage(Model model, @PathVariable Long id) {
-		Affectation affectation = affectationsRepository.findById(id).get();
+		AffectationDto affectDto = affectationService.getAffectationDtoForUpdate(id);
 
-		AffectationDto affectDto = new AffectationDto();
-		affectDto.setCollaboratorId(affectation.getCollaborator().getId());
-		affectDto.setRestaurantId(affectation.getRestaurant().getId());
-		affectDto.setJobId(affectation.getJob().getId());
-		affectDto.setUpdatedAt(new Date());
-
-		model.addAttribute("affectationDto", new AffectationDto());
-		model.addAttribute("collaborators", collaboratorRepository.findAll());
-		model.addAttribute("restaurants", restaurantsRepository.findAll());
-		model.addAttribute("jobs", jobRepository.findAll());
 		model.addAttribute("affectationDto", affectDto);
+		model.addAttribute("collaborators", affectationService.getAllCollaborators());
+		model.addAttribute("restaurants", affectationService.getAllRestaurants());
+		model.addAttribute("jobs", affectationService.getAllJobs());
+
 		return "affectations/update";
 	}
 
@@ -112,31 +112,14 @@ public class AffectationController {
 			return "affectations/update";
 		}
 
-		Affectation affectToSave = affectationsRepository.findById(id).get();
-		Collaborator collaborator = collaboratorRepository.findById(affectationDto.getCollaboratorId())
-				.orElseThrow(() -> new RuntimeException("Collaborator not found"));
-		Restaurant restaurant = restaurantsRepository.findById(affectationDto.getRestaurantId())
-				.orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
-		Job job = jobRepository.findById(affectationDto.getJobId())
-				.orElseThrow(() -> new IllegalArgumentException("Job not found"));
-
-		affectToSave.setCollaborator(collaborator);
-		affectToSave.setCollaborator(collaborator);
-		affectToSave.setRestaurant(restaurant);
-		affectToSave.setJob(job);
-		affectToSave.setUpdatedAt(new Date());
-
-		affectationsRepository.save(affectToSave);
+		affectationService.updateAffectation(id, affectationDto);
 
 		return "redirect:/affectations";
 	}
 
 	@GetMapping("/end/{id}")
 	public String endAffectation(@PathVariable Long id) {
-		Affectation affect = affectationsRepository.findById(id).get();
-		affect.setEndDate(new Date());
-		affectationsRepository.save(affect);
-
+		affectationService.endAffectation(id);
 		return "redirect:/affectations";
 	}
 }

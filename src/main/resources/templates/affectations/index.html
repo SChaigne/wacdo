@@ -1,52 +1,87 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{layout :: page_head}"></head>
 
 <body>
-
 	<nav th:replace="~{layout :: page_navbar}"></nav>
 
-	<h1>La liste des collaborateurs</h1>
+	<h1>La liste des affectations</h1>
 
-	<a class="btn btn-primary" href="/affectations/create">Creer une affectation</a>
+	<a class="btn btn-primary mb-3" href="/affectations/create">Créer une affectation</a>
 
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Restaurant d'affectation</th>
-				<th>Collaborateur affecte</th>
-				<th>Intitule du poste</th>
-				<th>Debut d'affectation</th>
-				<th>Fin d'affectation</th>
-				<th>
+	<form method="get" action="/affectations">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Restaurant</th>
+					<th>Ville</th>
+					<th>Collaborateur</th>
+					<th>Poste</th>
+					<th>Début</th>
+					<th>Fin</th>
+					<th></th>
+				</tr>
+				<tr>
+					<th>
+						<input type="text" , name="restaurantName" class="form-control form-control-sm"
+							placeholder="Nom du restaurant" th:value="${selectedRestaurantName}">
+					</th>
+					<th>
+						<input type="text" name="city" class="form-control form-control-sm" placeholder="Ville..."
+							th:value="${selectedCity}">
+					</th>
+					<th>
+						<input type="text" name="collaboratorName" class="form-control form-control-sm"
+							placeholder="Nom ou prénom" th:value="${selectedCollaborator}">
+					</th>
+					<th>
+						<select name="jobId" class="form-select form-select-sm">
+							<option value="">Tous</option>
+							<option th:each="j : ${jobs}" th:value="${j.id}" th:text="${j.name}"
+								th:selected="${j.id == selectedJobId}">
+							</option>
+						</select>
+					</th>
+					<th>
+						<input type="date" name="startDate" class="form-control form-control-sm"
+							th:value="${selectedStartDate}">
+					</th>
+					<th>
+						<input type="date" name="endDate" class="form-control form-control-sm"
+							th:value="${selectedEndDate}">
+					</th>
+					<th>
+						<div class="d-flex gap-2">
+							<button type="submit" class="btn btn-primary btn-sm">Filtrer</button>
+							<a href="/affectations" class="btn btn-secondary btn-sm">Réinitialiser</a>
+						</div>
+					</th>
+				</tr>
+			</thead>
 
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="affectation : ${affectations}">
-				<td th:text="${affectation.restaurant.name}"></td>
-				<td th:text="${affectation.collaborator.lastName}"></td>
-				<td th:text="${affectation.job.name}"></td>
+			<tbody>
+				<tr th:each="affectation : ${affectations}">
 
-				<td th:text="${affectation.startDate}"></td>
-				<td th:text="${affectation.endDate}"></td>
-				<td>
-					<a class="btn btn-info" th:href="@{affectations/{id}(id=${affectation.id})}">
-						Detail
-					</a>
-					<a th:href="@{affectations/update/{id}(id=${affectation.id})}" class="btn btn-warning">Modifier</a>
+					<td th:text="${affectation.restaurant.name}"></td>
+					<td th:text="${affectation.restaurant.city}"></td>
 
-					<a class="btn btn-danger" th:if="${affectation.endDate == null}"
-						th:href="@{affectations/end/{id}(id=${affectation.id})}"
-						onclick="return confirm(`Etes-vous sur de vouloir mettre fin a l'affectation ?`)">
-						Fin d'affectation
-					</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+					<td th:text="${affectation.collaborator.lastName + ' ' + affectation.collaborator.firstName}"></td>
+					<td th:text="${affectation.job.name}"></td>
+					<td th:text="${affectation.startDate}"></td>
+					<td th:text="${affectation.endDate}"></td>
+					<td>
+						<a class="btn btn-info" th:href="@{affectations/{id}(id=${affectation.id})}">Détail</a>
+						<a class="btn btn-primary"
+							th:href="@{affectations/update/{id}(id=${affectation.id})}">Modifier</a>
+						<a class="btn btn-danger" th:if="${affectation.endDate == null}"
+							th:href="@{affectations/end/{id}(id=${affectation.id})}"
+							onclick="return confirm('Mettre fin à cette affectation ?')">Fin d'affectation</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
 
 	<footer th:replace="~{layout :: page_footer}"></footer>
 </body>
