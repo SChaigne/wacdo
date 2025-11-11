@@ -3,6 +3,7 @@ package com.gdu.wacdo.services;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,11 +49,8 @@ public class CollaboratorService {
 	}
 
 	public Collaborator createCollaborator(CollaboratorDto dto) {
-		Collaborator c = new Collaborator();
-		c.setEmail(dto.getEmail());
-		c.setFirstName(dto.getFirstName());
-		c.setLastName(dto.getLastName());
-		c.setHireDate(LocalDate.now());
+		ModelMapper modelMapper = new ModelMapper();
+		Collaborator c = modelMapper.map(dto, Collaborator.class);
 		try {
 			return collaboratorRepository.save(c);
 		} catch (Exception e) {

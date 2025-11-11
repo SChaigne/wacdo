@@ -3,6 +3,7 @@ package com.gdu.wacdo.services;
 import java.util.Date;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +39,8 @@ public class RestaurantService {
 	}
 
 	public Restaurant createRestaurant(RestaurantDto restaurantDto) {
-		Restaurant restaurant = new Restaurant();
-		restaurant.setAdress(restaurantDto.getAdress());
-		restaurant.setCity(restaurantDto.getCity());
-		restaurant.setName(restaurantDto.getName());
-		restaurant.setZipCode(restaurantDto.getZipCode());
+		ModelMapper modelMapper = new ModelMapper();
+		Restaurant restaurant = modelMapper.map(restaurantDto, Restaurant.class);
 		try {
 			return restaurantsRepository.save(restaurant);
 		} catch (Exception e) {

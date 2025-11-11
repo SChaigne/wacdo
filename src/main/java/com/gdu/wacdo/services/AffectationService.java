@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +76,10 @@ public class AffectationService {
 	}
 
 	public Affectation createAffectation(AffectationDto dto) {
+
+		ModelMapper modMap = new ModelMapper();
+		Affectation affectation = modMap.map(dto, Affectation.class);
+
 		Collaborator collaborator = collaboratorRepository.findById(dto.getCollaboratorId())
 				.orElseThrow(() -> new RuntimeException("Collaborator not found"));
 		Restaurant restaurant = restaurantsRepository.findById(dto.getRestaurantId())
@@ -82,7 +87,6 @@ public class AffectationService {
 		Job job = jobRepository.findById(dto.getJobId())
 				.orElseThrow(() -> new IllegalArgumentException("Job not found"));
 
-		Affectation affectation = new Affectation();
 		affectation.setCollaborator(collaborator);
 		affectation.setRestaurant(restaurant);
 		affectation.setJob(job);
