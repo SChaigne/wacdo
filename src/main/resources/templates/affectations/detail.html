@@ -1,23 +1,57 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{layout :: page_head}"></head>
 
 <body>
+<nav th:replace="~{layout :: page_navbar}"></nav>
 
-	<nav th:replace="~{layout :: page_navbar}"></nav>
+<div class="container mt-4">
+    <div class="mb-3">
+        <button type="button" class="btn btn-success" onclick="history.back()">
+            <i class="bi bi-arrow-left"></i> Retour
+        </button>
+    </div>
 
-	<button type="button" class="btn btn-secondary" onclick="history.back()">Retour</button>
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-success text-white">
+            <i class="bi bi-info-circle-fill"></i> Détails de l'affectation
+        </div>
+        <div class="card-body" style="background-color: #faf8f5;">
+            <h4 class="card-title mb-4 text-success text-center" 
+                th:text="${affectation.collaborator.firstName + ' ' + affectation.collaborator.lastName}"></h4>
 
-	<h1>Les details de l'affectation</h1>
+            <div class="mb-3">
+                <strong>Restaurant :</strong>
+                <p class="mb-0" th:text="${affectation.restaurant.name}"></p>
+            </div>
 
-	<p th:text="${affectation.collaborator.firstName + ' ' + affectation.collaborator.lastName}">
-	<p th:text="${affectation.restaurant.name}"></p>
-	<p th:text="${affectation.job.name}"></p>
-	<p th:text="${affectation.startDate}"></p>
-	<p th:text="${affectation.endDate}"></p>
+            <div class="mb-3">
+                <strong>Poste :</strong>
+                <p class="mb-0" th:text="${affectation.job.name}"></p>
+            </div>
 
-	<footer th:replace="~{layout :: page_footer}"></footer>
+            <div class="mb-3">
+                <strong>Date de début :</strong>
+                <p class="mb-0" th:text="${#dates.format(affectation.startDate, 'dd/MM/yyyy')}"></p>
+            </div>
+
+            <div class="mb-3">
+                <strong>Date de fin :</strong>
+                <p class="mb-0" 
+                   th:text="${affectation.endDate != null ? #dates.format(affectation.endDate, 'dd/MM/yyyy') : 'En cours'}"></p>
+            </div>
+
+            <div class="text-center mt-4">
+                <a th:href="@{/affectations}" class="btn btn-secondary ">
+                     Fermer
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: page_footer}"></footer>
+
 </body>
-
 </html>
