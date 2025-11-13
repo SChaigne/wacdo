@@ -1,22 +1,44 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{layout :: page_head}"></head>
 
 <body>
+<nav th:replace="~{layout :: page_navbar}"></nav>
 
-	<nav th:replace="~{layout :: page_navbar}"></nav>
+<div class="container mt-4">
+    <div class="mb-3">
+        <button type="button" class="btn btn-primary" onclick="history.back()">
+            <i class="bi bi-arrow-left"></i> Retour
+        </button>
+    </div>
 
-	<button type="button" class="btn btn-secondary" onclick="history.back()">Retour</button>
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h1 class="card-title text-success mb-3">
+                <i class="bi bi-briefcase"></i>
+                Détails du poste : <span th:text="${job.name}"></span>
+            </h1>
 
-	<h1>Les details du job <span th:text="${job.name}"></span></h1>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <p><strong>Nom du poste :</strong></p>
+                    <p class="text-muted" th:text="${job.name}"></p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Créé le :</strong></p>
+                    <p class="text-muted" th:text="${#dates.format(job.createdAt, 'dd/MM/yyyy')}"></p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Dernière mise à jour :</strong></p>
+                    <p class="text-muted" th:text="${#dates.format(job.updatedAt, 'dd/MM/yyyy')}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<p th:text="${job.name}">
-	<p th:text="${job.createdAt}">
-	<p th:text="${job.updatedAt}">
+</div>
 
-
-	<footer th:replace="~{layout :: page_footer}"></footer>
+<footer th:replace="~{layout :: page_footer}"></footer>
 </body>
-
 </html>
