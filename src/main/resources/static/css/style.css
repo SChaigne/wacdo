@@ -1,0 +1,80 @@
+/* ----- Palette ----- */
+:root {
+  --vert-pastel: #a8d5ba;
+  --beige-clair: #f5f0e1;
+  --vert-fonce: #6b9c78;
+  --texte-sombre: #333;
+}
+
+/* ----- Corps de page ----- */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--beige-clair);
+  color: var(--texte-sombre);
+  margin: 0;
+  padding: 0;
+}
+
+/* ----- Boutons ----- */
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+}
+
+/* Variantes de boutons */
+.btn-primary {
+  background-color: var(--vert-pastel);
+  color: var(--texte-sombre);
+}
+
+.btn-primary:hover {
+  background-color: var(--vert-fonce);
+  color: white;
+}
+
+.btn-danger {
+  background-color: #e57373;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #d32f2f;
+}
+
+.btn-info {
+  background-color: #81c784;
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #388e3c;
+}
+
+/* ----- Table ----- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: var(--vert-pastel);
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}

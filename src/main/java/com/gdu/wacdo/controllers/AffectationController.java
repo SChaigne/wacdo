@@ -38,7 +38,9 @@ public class AffectationController {
 	private JobRepository jobRepository;
 
 	@GetMapping({ "", "/" })
-	public String affectations(@RequestParam(required = false) Long jobId, @RequestParam(required = false) String city,
+	public String affectations(
+			@RequestParam(required = false) Long jobId, 
+			@RequestParam(required = false) String city,
 			@RequestParam(required = false) String restaurantName,
 			@RequestParam(required = false) String collaboratorName,
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,

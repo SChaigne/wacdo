@@ -1,75 +1,82 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{layout :: page_head}"></head>
+<head th:replace="~{layout :: page_head}">
+</head>
 
 <body>
+	<nav th:replace="~{layout :: page_navbar}"></nav>
 
-<nav th:replace="~{layout :: page_navbar}"></nav>
+	<div class="container">
+		<h1>Liste des restaurants</h1>
 
-<h1>Liste des restaurants</h1>
+		<div class="actions">
+			<a class="btn btn-primary" href="/restaurants/create">Créer un restaurant</a>
+		</div>
 
-<div class="mb-3">
-    <a class="btn btn-primary" href="/restaurants/create">Créer un restaurant</a>
-</div>
+		<form method="get" th:action="@{/restaurants}">
+			<div class="row mb-3">
+				<div class="col-md-3">
+					<label for="name" class="form-label">Nom</label>
+					<input type="text" id="name" name="name" class="form-control" placeholder="Nom du restaurant"
+						th:value="${name}">
+				</div>
 
-<form method="get" th:action="@{/restaurants}" class="mb-4">
-    <div class="row g-2 align-items-end">
-        <div class="col-md-3">
-            <label for="name" class="form-label">Nom :</label>
-            <input type="text" id="name" name="name" class="form-control" placeholder="Nom du restaurant"
-                   th:value="${name}">
-        </div>
+				<div class="col-md-2">
+					<label for="zipCode" class="form-label">Code postal</label>
+					<input type="text" id="zipCode" name="zipCode" class="form-control" placeholder="Ex: 75000"
+						th:value="${zipCode}">
+				</div>
 
-        <div class="col-md-2">
-            <label for="zipCode" class="form-label">Code postal :</label>
-            <input type="text" id="zipCode" name="zipCode" class="form-control" placeholder="Ex: 75000"
-                   th:value="${zipCode}">
-        </div>
+				<div class="col-md-3">
+					<label for="city" class="form-label">Ville</label>
+					<input type="text" id="city" name="city" class="form-control" placeholder="Ex: Paris"
+						th:value="${city}">
+				</div>
 
-        <div class="col-md-3">
-            <label for="city" class="form-label">Ville :</label>
-            <input type="text" id="city" name="city" class="form-control" placeholder="Ex: Paris"
-                   th:value="${city}">
-        </div>
+				<div class="col-md-4 d-flex align-items-end justify-content-end gap-2">
+					<button type="submit" class="btn btn-primary">Rechercher</button>
+					<a class="btn btn-outline-secondary" th:href="@{/restaurants}">Réinitialiser</a>
+				</div>
+			</div>
+		</form>
 
-        <div class="col-md-4">
-            <button type="submit" class="btn btn-primary">Rechercher</button>
-            <a class="btn btn-outline-secondary" th:href="@{/restaurants}">Réinitialiser</a>
-        </div>
-    </div>
-</form>
+		<table>
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Adresse</th>
+					<th>Code Postal</th>
+					<th>Ville</th>
+					<th class="text-center">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="restaurant : ${restaurants}">
+					<td th:text="${restaurant.name}"></td>
+					<td th:text="${restaurant.adress}"></td>
+					<td th:text="${restaurant.zipCode}"></td>
+					<td th:text="${restaurant.city}"></td>
+					<td>
+						<div class="table-actions justify-content-center">
+							<a class="btn btn-info" th:href="@{restaurants/{id}(id=${restaurant.id})}">Détails</a>
+							<a class="btn btn-primary"
+								th:href="@{restaurants/update/{id}(id=${restaurant.id})}">Modifier</a>
+							<a class="btn btn-danger" th:href="@{restaurants/delete/{id}(id=${restaurant.id})}"
+								onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce restaurant ?')">Supprimer</a>
+						</div>
+					</td>
+				</tr>
+				<tr th:if="${#lists.isEmpty(restaurants)}">
+					<td colspan="5" class="text-center text-muted py-4">
+						Aucun restaurant trouvé.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-<!-- 🧾 Tableau des résultats -->
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Adresse</th>
-            <th>Code Postal</th>
-            <th>Ville</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="restaurant : ${restaurants}">
-            <td th:text="${restaurant.name}"></td>
-            <td th:text="${restaurant.adress}"></td>
-            <td th:text="${restaurant.zipCode}"></td>
-            <td th:text="${restaurant.city}"></td>
-            <td>
-                <a class="btn btn-info btn-sm" th:href="@{restaurants/{id}(id=${restaurant.id})}">Détails</a>
-                <a class="btn btn-primary btn-sm" th:href="@{restaurants/update/{id}(id=${restaurant.id})}">Modifier</a>
-                <a class="btn btn-danger btn-sm" th:href="@{restaurants/delete/{id}(id=${restaurant.id})}"
-                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer ?')">Supprimer</a>
-            </td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(restaurants)}">
-            <td colspan="5" class="text-center text-muted">Aucun restaurant trouvé.</td>
-        </tr>
-    </tbody>
-</table>
-
-<footer th:replace="~{layout :: page_footer}"></footer>
+	<footer th:replace="~{layout :: page_footer}"></footer>
 </body>
+
 </html>
