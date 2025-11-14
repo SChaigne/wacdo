@@ -15,7 +15,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.authorizeHttpRequests(auth -> auth.requestMatchers("/").permitAll()
-//						.requestMatchers("/affectations/**").permitAll()
+				.requestMatchers("/css/**").permitAll() // Permet de charger le css, sinon bloque par la security
 				.requestMatchers("/jobs/**").permitAll().requestMatchers("/restaurants/**").permitAll()
 				.requestMatchers("/collaborators/**").permitAll().requestMatchers("/login").permitAll()
 				.requestMatchers("/logout").permitAll().requestMatchers("/register").permitAll().anyRequest()
@@ -27,4 +27,7 @@ public class SecurityConfig {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+
+
 }
