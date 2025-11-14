@@ -28,8 +28,8 @@ public class CollaboratorController {
 
     @GetMapping({ "", "/" })
     public String listCollaborators(
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "unassigned", required = false) Boolean unassigned,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Boolean unassigned,
             Model model) {
 
         model.addAttribute("collaborators", collaboratorService.getCollaborators(keyword, unassigned));
