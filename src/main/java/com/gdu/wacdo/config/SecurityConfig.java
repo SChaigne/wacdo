@@ -16,10 +16,12 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.authorizeHttpRequests(auth -> auth.requestMatchers("/").permitAll()
 				.requestMatchers("/css/**").permitAll() // Permet de charger le css, sinon bloque par la security
-				.requestMatchers("/jobs/**").permitAll().requestMatchers("/restaurants/**").permitAll()
-				.requestMatchers("/collaborators/**").permitAll().requestMatchers("/login").permitAll()
-				.requestMatchers("/logout").permitAll().requestMatchers("/register").permitAll().anyRequest()
-				.authenticated()).formLogin(form -> form.defaultSuccessUrl("/", true))
+				.requestMatchers("/login").permitAll()
+				.requestMatchers("/logout").permitAll()
+				.requestMatchers("/register").permitAll().anyRequest()
+				.authenticated()).formLogin(form -> form.defaultSuccessUrl("/", true).loginPage("/login"))
+			   
+
 				.logout(config -> config.logoutSuccessUrl("/")).build();
 	}
 

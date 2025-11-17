@@ -21,21 +21,26 @@ import com.gdu.wacdo.repositories.AppUserRepository;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/register")
+@RequestMapping()
 public class AccountController {
 
 	@Autowired
 	private AppUserRepository userRepo;
 
-	@GetMapping({ "/", "" })
+	@GetMapping({ "/register/", "/register" })
 	public String register(Model model) {
 		RegisterDto registerDto = new RegisterDto();
 		model.addAttribute(registerDto);
 		model.addAttribute("success", false);
 		return "account/register";
 	}
+	
+	@GetMapping({ "/login/", "/login" })
+	public String login(Model model) {
+		return "account/login";
+	}
 
-	@PostMapping({ "/", "" })
+	@PostMapping({ "/register/", "/register" })
 	public String addAccount(Model model, @Valid @ModelAttribute RegisterDto registerDto, BindingResult result) {
 
 		if (!registerDto.getPassword().equals(registerDto.getConfirmPassword())) {

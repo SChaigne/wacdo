@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout :: page_head}"></head>
+
+<body>
+	<nav th:replace="~{layout :: page_navbar}"></nav>
+
+	<div class="container">
+
+		<div class="card mt-5" style="max-width: 450px; margin: 0 auto;">
+			<div class="card-body">
+
+				<h1 class="text-center mb-4">Connexion</h1>
+
+				<!-- Message d'erreur Spring Security -->
+				<div th:if="${param.error}" class="alert alert-danger">
+					Identifiants incorrects.
+				</div>
+
+				<!-- Message déconnexion -->
+				<div th:if="${param.logout}" class="alert alert-success">
+					Vous êtes bien déconnecté.
+				</div>
+
+				<form method="post" th:action="@{/login}">
+					<div class="mb-3">
+						<label class="form-label">Adresse email</label>
+						<input type="email" name="username" class="form-control" placeholder="exemple@mail.com"
+							required>
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label">Mot de passe</label>
+						<input type="password" name="password" class="form-control" placeholder="Votre mot de passe"
+							required>
+					</div>
+
+					<div class="d-flex flex-column justify-content-center align-items-center mt-4 gap-2">
+						<button type="submit" class="btn btn-primary">Se connecter</button>
+
+						<a th:href="@{/register}" class="btn btn-outline-secondary">Créer un compte</a>
+
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+	<footer th:replace="~{layout :: page_footer}"></footer>
+
+	<style>
+		.card {
+			background: white;
+			border-radius: 12px;
+			padding: 20px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			color: var(--vert-fonce);
+		}
+
+		.btn-primary {
+			background-color: var(--vert-fonce);
+			border: none;
+		}
+
+		.btn-primary:hover {
+			background-color: #1d5f49;
+		}
+	</style>
+
+</body>
+
+</html>
