@@ -15,13 +15,11 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.authorizeHttpRequests(auth -> auth.requestMatchers("/").permitAll()
-				.requestMatchers("/css/**").permitAll() // Permet de charger le css, sinon bloque par la security
-				.requestMatchers("/login").permitAll()
-				.requestMatchers("/logout").permitAll()
-				.requestMatchers("/register").permitAll().anyRequest()
+				.requestMatchers("/css/**", "/login", "/logout", "/register").permitAll() // Permet de charger le css, sinon bloque par la security
+				.requestMatchers("/collaborateurs/**").hasAnyRole("COLLABORATEUR", "ADMIN")
+	            .requestMatchers("/admin/**").hasRole("ADMIN")
+				.anyRequest()
 				.authenticated()).formLogin(form -> form.defaultSuccessUrl("/", true).loginPage("/login"))
-			   
-
 				.logout(config -> config.logoutSuccessUrl("/")).build();
 	}
 
