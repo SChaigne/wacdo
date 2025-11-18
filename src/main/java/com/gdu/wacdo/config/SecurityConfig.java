@@ -15,7 +15,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.authorizeHttpRequests(auth -> auth.requestMatchers("/").permitAll()
-				.requestMatchers("/css/**", "/login", "/logout", "/register").permitAll() // Permet de charger le css, sinon bloque par la security
+				.requestMatchers("/css/**", "/login", "/logout", "/register", "/actuator/**").permitAll() // Permet de charger le css, sinon bloque par la security
 				.requestMatchers("/collaborateurs/**").hasAnyRole("COLLABORATEUR", "ADMIN")
 	            .requestMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest()
