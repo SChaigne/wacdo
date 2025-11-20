@@ -27,8 +27,7 @@ public class Restaurant {
 	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
 	private List<Affectation> affectations;
 
-	public Restaurant() {
-	}
+	public Restaurant() {}
 
 	public Restaurant(String name, String adress, String zipCode, String city) {
 		this.name = name;
@@ -89,5 +88,9 @@ public class Restaurant {
 	public String toString() {
 		return "Restaurant{" + "nom='" + name + '\'' + ", adresse='" + adress + '\'' + ", codePostal='" + zipCode + '\''
 				+ ", ville='" + city + '\'' + '}';
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

@@ -12,8 +12,10 @@ import com.gdu.wacdo.repositories.JobRepository;
 
 @Service
 public class JobService {
+
 	@Autowired
 	private JobRepository jobRepository;
+
 
 	public List<Job> getAllJobs() {
 		return jobRepository.findAll();

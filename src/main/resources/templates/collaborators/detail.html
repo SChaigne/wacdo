@@ -58,8 +58,8 @@
         </thead>
         <tbody>
         <tr th:each="aff : ${currentAffectations}">
-            <td th:text="${aff.restaurant.name}"></td>
-            <td th:text="${aff.job.name}"></td>
+            <td th:text="${aff.restaurant?.name}"></td>
+            <td th:text="${aff.job?.name}"></td>
             <td th:text="${aff.startDate}"></td>
             <td>
                 <a th:href="@{/affectations/update/{id}(id=${aff.id})}" class="btn btn-warning btn-sm">Modifier</a>
@@ -85,8 +85,8 @@
         </thead>
         <tbody>
         <tr th:each="aff : ${pastAffectations}">
-            <td th:text="${aff.restaurant.name}"></td>
-            <td th:text="${aff.job.name}"></td>
+            <td th:text="${aff.restaurant?.name}"></td>
+            <td th:text="${aff.job?.name}"></td>
             <td th:text="${aff.startDate}"></td>
             <td th:text="${aff.endDate}"></td>
         </tr>
