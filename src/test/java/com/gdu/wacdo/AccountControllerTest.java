@@ -4,7 +4,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.gdu.wacdo.controllers.RestaurantController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -53,7 +52,7 @@ class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/login"));
     }
-    
+
     @Test
     void testRegisterPostSuccess() throws Exception {
         when(userRepo.findByEmail("test@test.com")).thenReturn(null);
@@ -73,5 +72,41 @@ class AccountControllerTest {
         verify(userRepo).save(any(AppUser.class));
     }
 
+    @Test
+    void testRegisterPostEmailAlreadyUsed() throws Exception {
+        AppUser existing = new AppUser();
+        existing.setEmail("test@test.com");
+        when(userRepo.findByEmail("test@test.com")).thenReturn(existing);
 
+        mockMvc.perform(post("/register")
+                        .flashAttr("_csrf", new Object())
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("firstName", "John")
+                        .param("lastName", "Doe")
+                        .param("email", "test@test.com")
+                        .param("password", "123456")
+                        .param("confirmPassword", "123456")
+                )
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/register"))
+                .andExpect(model().attributeDoesNotExist("success"));
+    }
+
+    @Test
+    void testRegisterPostPasswordMismatch() throws Exception {
+        when(userRepo.findByEmail("john@mail.com")).thenReturn(null);
+
+        mockMvc.perform(post("/register")
+                        .flashAttr("_csrf", new Object())
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("firstName", "John")
+                        .param("lastName", "Doe")
+                        .param("email", "john@mail.com")
+                        .param("password", "123456")
+                        .param("confirmPassword", "654321")
+                )
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/register"))
+                .andExpect(model().attributeDoesNotExist("success"));
+    }
 }
