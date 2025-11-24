@@ -19,7 +19,7 @@ public class SecurityConfig {
 				.requestMatchers("/collaborateurs/**").hasAnyRole("COLLABORATEUR", "ADMIN")
 	            .requestMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest()
-				.authenticated()).formLogin(form -> form.defaultSuccessUrl("/", true).loginPage("/login"))
+				.authenticated()).formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/restaurants/", true))
 				.logout(config -> config.logoutSuccessUrl("/")).build();
 	}
 
