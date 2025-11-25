@@ -3,6 +3,7 @@ package com.gdu.wacdo.dtos;
 import java.util.Date;
 
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class AffectationDto {
 
@@ -17,8 +18,11 @@ public class AffectationDto {
 	@NotNull(message = "Le poste est obligatoire")
 	private Long jobId;
 
-	private Date startDate;
-	private Date endDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date startDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date endDate;
 	private Date createdAt;
 	private Date updatedAt;
 
