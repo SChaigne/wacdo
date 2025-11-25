@@ -1,19 +1,14 @@
-package com.gdu.wacdo;
+package com.gdu.wacdo.controllers;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import java.time.LocalDate;
-import java.util.List;
-
+import com.gdu.wacdo.dtos.AffectationDto;
+import com.gdu.wacdo.models.Affectation;
+import com.gdu.wacdo.models.Collaborator;
+import com.gdu.wacdo.models.Job;
+import com.gdu.wacdo.models.Restaurant;
+import com.gdu.wacdo.repositories.CollaboratorRepository;
+import com.gdu.wacdo.repositories.JobRepository;
+import com.gdu.wacdo.repositories.RestaurantsRepository;
+import com.gdu.wacdo.services.AffectationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,16 +20,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.gdu.wacdo.controllers.AffectationController;
-import com.gdu.wacdo.dtos.AffectationDto;
-import com.gdu.wacdo.models.Affectation;
-import com.gdu.wacdo.models.Collaborator;
-import com.gdu.wacdo.models.Job;
-import com.gdu.wacdo.models.Restaurant;
-import com.gdu.wacdo.repositories.CollaboratorRepository;
-import com.gdu.wacdo.repositories.JobRepository;
-import com.gdu.wacdo.repositories.RestaurantsRepository;
-import com.gdu.wacdo.services.AffectationService;
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AffectationControllerTest.class)
 @AutoConfigureMockMvc(addFilters = false)

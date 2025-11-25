@@ -80,12 +80,15 @@ class RestaurantServiceTest {
         List<Affectation> list = new ArrayList<>();
         list.add(a);
 
-        when(affectationsRepository.findCurrentAffectationsByRestaurant(1L, 2L, "John", new Date())).thenReturn(list);
+        Date fixedDate = new Date();
 
-        List<Affectation> result = restaurantService.getAffectations(1L, 2L, "John", new Date());
+        when(affectationsRepository.findCurrentAffectationsByRestaurant(1L, 2L, "John", fixedDate))
+                .thenReturn(list);
+
+        List<Affectation> result = restaurantService.getAffectations(1L, 2L, "John", fixedDate);
+
         assertEquals(1, result.size());
     }
-
     @Test
     void testCreateRestaurant() {
         RestaurantDto dto = new RestaurantDto();

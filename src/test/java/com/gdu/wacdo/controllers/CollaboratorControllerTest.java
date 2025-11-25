@@ -1,15 +1,11 @@
-package com.gdu.wacdo;
+package com.gdu.wacdo.controllers;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.time.LocalDate;
-import java.util.List;
-
+import com.gdu.wacdo.dtos.CollaboratorDto;
+import com.gdu.wacdo.models.Affectation;
+import com.gdu.wacdo.models.Collaborator;
+import com.gdu.wacdo.models.Job;
+import com.gdu.wacdo.models.Restaurant;
+import com.gdu.wacdo.services.CollaboratorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,16 +14,19 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.gdu.wacdo.controllers.CollaboratorController;
-import com.gdu.wacdo.dtos.CollaboratorDto;
-import com.gdu.wacdo.models.Affectation;
-import com.gdu.wacdo.models.Collaborator;
-import com.gdu.wacdo.models.Job;
-import com.gdu.wacdo.models.Restaurant;
-import com.gdu.wacdo.services.CollaboratorService;
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CollaboratorController.class)
 @AutoConfigureMockMvc(addFilters = false)
+
 class CollaboratorControllerTest {
 
 	@Autowired

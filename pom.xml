@@ -94,18 +94,24 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.14</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/WacdoApplication.class</exclude>
+
+                        <exclude>**/dtos/*</exclude>
+
+                        <exclude>**/models/*</exclude>
+
+                        <exclude>**/controllers/HomeController.class</exclude>
+                        <exclude>**/controllers/HelloController.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/*Test*</exclude>
-                                <exclude>**/*Mockito*</exclude>
-                            </excludes>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>report</id>
@@ -123,6 +129,7 @@
                             <rules>
                                 <rule>
                                     <element>CLASS</element>
+
                                     <limits>
                                         <limit>
                                             <counter>LINE</counter>
