@@ -19,6 +19,7 @@
         </div>
         <div class="card-body">
             <form method="post" th:object="${affectationDto}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <div class="mb-3">
                     <label for="collaborator" class="form-label">Collaborateur</label>
                     <select th:field="*{collaboratorId}" id="collaborator" class="form-select">
