@@ -1,8 +1,6 @@
 package com.gdu.wacdo.controllers.TI;
 
 import com.gdu.wacdo.dtos.AffectationDto;
-import com.gdu.wacdo.models.Affectation;
-import com.gdu.wacdo.models.Collaborator;
 import com.gdu.wacdo.services.AffectationService;
 import com.gdu.wacdo.repositories.JobRepository;
 import com.gdu.wacdo.repositories.CollaboratorRepository;
