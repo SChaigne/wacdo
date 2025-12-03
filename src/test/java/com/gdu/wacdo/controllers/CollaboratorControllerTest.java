@@ -20,6 +20,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -81,7 +82,7 @@ class CollaboratorControllerTest {
 
 	@Test
 	void testCreateCollaboratorPage() throws Exception {
-		mockMvc.perform(get("/collaborators/create")).andExpect(status().isOk())
+		mockMvc.perform(get("/collaborators/create").with(csrf())).andExpect(status().isOk())
 				.andExpect(view().name("collaborators/create")).andExpect(model().attributeExists("collaboratorDto"));
 	}
 
@@ -104,7 +105,7 @@ class CollaboratorControllerTest {
 
 		when(collaboratorService.getCollaboratorById(1L)).thenReturn(collab);
 
-		mockMvc.perform(get("/collaborators/update/1")).andExpect(status().isOk())
+		mockMvc.perform(get("/collaborators/update/1").with(csrf())).andExpect(status().isOk())
 				.andExpect(view().name("collaborators/update")).andExpect(model().attributeExists("collaboratorDto"));
 	}
 

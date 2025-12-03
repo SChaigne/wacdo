@@ -16,6 +16,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -59,7 +60,7 @@ class JobControllerTest {
 
     @Test
     void testCreateJobPage() throws Exception {
-        mockMvc.perform(get("/jobs/create"))
+        mockMvc.perform(get("/jobs/create").with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("jobs/create"))
                 .andExpect(model().attributeExists("jobDto"));
@@ -84,7 +85,7 @@ class JobControllerTest {
 
         when(jobService.getJobById(1L)).thenReturn(job);
 
-        mockMvc.perform(get("/jobs/update/1"))
+        mockMvc.perform(get("/jobs/update/1").with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("jobs/update"))
                 .andExpect(model().attributeExists("jobDto"));
