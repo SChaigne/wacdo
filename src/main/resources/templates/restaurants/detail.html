@@ -22,9 +22,16 @@
 
 		<hr>
 
-		<h2>Collaborateurs actuellement en poste</h2>
+        <div class="d-flex gap-4 m-2 align-items-center">
+            <h2>Collaborateurs actuellement en poste</h2>
 
-		<form method="get" th:action="@{/restaurants/{id}(id=${restaurant.id})}" class="mb-3">
+            <a th:href="@{/affectations/create}" class="btn btn-primary">
+                Affecter collaborateur
+            </a>
+        </div>
+
+
+        <form method="get" th:action="@{/restaurants/{id}(id=${restaurant.id})}" class="mb-3">
 			<div class="row mb-3">
 				<div class="col-md-3">
 					<label for="name" class="form-label">Nom</label>
@@ -60,7 +67,9 @@
 					<th>Prénom</th>
 					<th>Poste</th>
 					<th>Date de début</th>
-				</tr>
+                    <th>Date de fin</th>
+
+                </tr>
 			</thead>
 			<tbody>
 				<tr th:each="a : ${affectations}">
@@ -68,7 +77,9 @@
 					<td th:text="${a.collaborator.firstName}"></td>
 					<td th:text="${a.job.name}"></td>
 					<td th:text="${#dates.format(a.startDate, 'dd/MM/yyyy')}"></td>
-				</tr>
+                    <td th:text="${a.endDate != null ? #dates.format(a.endDate, 'dd/MM/yyyy') : 'En poste'}"></td>
+
+                </tr>
 				<tr th:if="${#lists.isEmpty(affectations)}">
 					<td colspan="4" class="text-center text-muted">Aucun collaborateur en poste pour le moment.</td>
 				</tr>
