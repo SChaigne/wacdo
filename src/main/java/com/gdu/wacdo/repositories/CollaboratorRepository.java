@@ -18,11 +18,13 @@ public interface CollaboratorRepository extends JpaRepository<Collaborator, Long
 			""")
 	List<Collaborator> findByKeyword(@Param("keyword") String keyword);
 
-	@Query("""
-			    SELECT c FROM Collaborator c
-			    WHERE c.id NOT IN (
-			        SELECT a.collaborator.id FROM Affectation a
-			    )
-			""")
+    @Query("""
+    SELECT c FROM Collaborator c
+    WHERE NOT EXISTS (
+        SELECT a FROM Affectation a
+        WHERE a.collaborator = c
+        AND (a.endDate IS NULL )
+        )
+    """)
 	List<Collaborator> findCollaboratorsWithoutAffectation();
 }
