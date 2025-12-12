@@ -84,14 +84,23 @@ public class AffectationController {
 	}
 
 	@PostMapping("/create")
-	public String createAffectation(@Valid @ModelAttribute AffectationDto affectationDto, BindingResult result) {
-		if (result.hasErrors()) {
-			return "affectations/create";
-		}
+	public String createAffectation(@Valid @ModelAttribute AffectationDto affectationDto, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "affectations/create";
+        }
 
-		affectationService.createAffectation(affectationDto);
+        try {
+            affectationService.createAffectation(affectationDto);
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("affectationDto", new AffectationDto());
+            model.addAttribute("collaborators", collaboratorRepository.findAll());
+            model.addAttribute("restaurants", restaurantsRepository.findAll());
+            model.addAttribute("jobs", jobRepository.findAll());
+            return "affectations/create";
+        }
 
-		return "redirect:/affectations";
+        return "redirect:/affectations";
 	}
 
 	@GetMapping("update/{id}")

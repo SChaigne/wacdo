@@ -77,6 +77,12 @@ public class AffectationService {
 
 	public Affectation createAffectation(AffectationDto dto) {
 
+        List<Affectation> active = affectationsRepository.findActiveAffectations(dto.getCollaboratorId());
+
+        if (!active.isEmpty()) {
+            throw new IllegalStateException("Ce collaborateur a déjà une affectation active.");
+        }
+
 		ModelMapper modMap = new ModelMapper();
 		Affectation affectation = modMap.map(dto, Affectation.class);
 

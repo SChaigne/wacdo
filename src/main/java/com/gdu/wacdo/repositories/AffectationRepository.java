@@ -46,4 +46,11 @@ public interface AffectationRepository extends JpaRepository<Affectation, Long> 
 	List<Affectation> findCurrentAffectationsByRestaurant(@Param("restaurantId") Long restaurantId,
 			@Param("jobId") Long jobId, @Param("name") String name, @Param("startDate") Date startDate);
 
+    @Query("""
+    SELECT a FROM Affectation a
+    WHERE a.collaborator.id = :collabId
+      AND (a.endDate IS NULL OR a.endDate >= CURRENT_DATE)
+    """)
+    List<Affectation> findActiveAffectations(Long collabId);
+
 }
