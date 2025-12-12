@@ -23,7 +23,7 @@ public interface CollaboratorRepository extends JpaRepository<Collaborator, Long
     WHERE NOT EXISTS (
         SELECT a FROM Affectation a
         WHERE a.collaborator = c
-        AND (a.endDate IS NULL )
+        AND (a.endDate IS NULL)
         )
     """)
 	List<Collaborator> findCollaboratorsWithoutAffectation();
