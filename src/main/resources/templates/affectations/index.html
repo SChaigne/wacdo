@@ -71,8 +71,8 @@
 						<td th:text="${affectation.collaborator.lastName + ' ' + affectation.collaborator.firstName}">
 						</td>
 						<td th:text="${affectation.job.name}"></td>
-						<td th:text="${affectation.startDate}"></td>
-						<td th:text="${affectation.endDate}"></td>
+						<td th:text="${#dates.format(affectation.startDate, 'dd-MM-yyyy')}"></td>
+						<td th:text="${#dates.format(affectation.endDate, 'dd-MM-yyyy')}"></td>
 						<td class="d-flex align-items-center gap-2">
 							<a class="btn btn-info" th:href="@{affectations/{id}(id=${affectation.id})}">Détail</a>
 							<a class="btn btn-primary"

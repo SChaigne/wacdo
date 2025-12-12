@@ -42,8 +42,8 @@
 					<td th:text="${collaborator.firstName}"></td>
 					<td th:text="${collaborator.lastName}"></td>
 					<td th:text="${collaborator.email}"></td>
-					<td th:text="${collaborator.hireDate}"></td>
-					<td class="text-center">
+                    <td th:text="${#temporals.format(collaborator.hireDate, 'dd/MM/yyyy')}"></td>
+                    <td class="text-center">
 						<div class="table-actions">
 							<a class="btn btn-info" th:href="@{collaborators/{id}(id=${collaborator.id})}">
 								Detail

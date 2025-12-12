@@ -60,7 +60,7 @@
         <tr th:each="aff : ${currentAffectations}">
             <td th:text="${aff.restaurant?.name}"></td>
             <td th:text="${aff.job?.name}"></td>
-            <td th:text="${aff.startDate}"></td>
+            <td th:text="${#dates.format(aff.startDate, 'dd/MM/yyyy')}"></td>
             <td>
                 <a th:href="@{/affectations/update/{id}(id=${aff.id})}" class="btn btn-warning btn-sm">Modifier</a>
                 <a th:href="@{/affectations/end/{id}(id=${aff.id})}" class="btn btn-danger btn-sm"
@@ -87,8 +87,8 @@
         <tr th:each="aff : ${pastAffectations}">
             <td th:text="${aff.restaurant?.name}"></td>
             <td th:text="${aff.job?.name}"></td>
-            <td th:text="${aff.startDate}"></td>
-            <td th:text="${aff.endDate}"></td>
+            <td th:text="${#dates.format(aff.startDate, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#dates.format(aff.endDate, 'dd/MM/yyyy')}"></td>
         </tr>
         <tr th:if="${#lists.isEmpty(pastAffectations)}">
             <td colspan="4" class="text-center">Aucune affectation passée</td>

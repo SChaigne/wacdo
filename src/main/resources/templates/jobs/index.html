@@ -17,15 +17,13 @@
 				<tr>
 					<th>Nom de la fonction</th>
 					<th>Cree le</th>
-					<th>Modifier le</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="job : ${jobs}">
 					<td th:text="${job.name}"></td>
-					<td th:text="${job.createdAt}"></td>
-					<td th:text="${job.updatedAt}"></td>
+					<td th:text="${#dates.format(job.createdAt, 'dd-MM-yyyy')}"></td>
 					<td>
 						<a class="btn btn-info" th:href="@{jobs/{id}(id=${job.id})}">
 							Detail
