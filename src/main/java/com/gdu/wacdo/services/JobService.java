@@ -28,7 +28,6 @@ public class JobService {
 	public Job createJob(JobDto jobDto) {
 		Job job = new Job();
 		job.setName(jobDto.getName());
-		job.setUpdatedAt(new Date());
 
 		try {
 			return jobRepository.save(job);

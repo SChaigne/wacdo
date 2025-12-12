@@ -51,6 +51,7 @@ public class CollaboratorService {
 	public Collaborator createCollaborator(CollaboratorDto dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		Collaborator c = modelMapper.map(dto, Collaborator.class);
+        c.setHireDate(LocalDate.now());
 		try {
 			return collaboratorRepository.save(c);
 		} catch (Exception e) {

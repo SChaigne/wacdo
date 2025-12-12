@@ -2,6 +2,8 @@ package com.gdu.wacdo.dtos;
 
 import jakarta.validation.constraints.NotEmpty;
 
+import java.util.Date;
+
 public class CollaboratorDto {
 	@NotEmpty(message = "The first is required")
 	private String firstName;
@@ -12,8 +14,10 @@ public class CollaboratorDto {
 	@NotEmpty(message = "The email is required")
 	private String email;
 
+    private Date hireDate;
 
-	public String getFirstName() {
+
+    public String getFirstName() {
 		return firstName;
 	}
 
@@ -36,4 +40,8 @@ public class CollaboratorDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+    public Date getHireDate() { return hireDate; }
+
+    public void setHireDate(Date hireDate) { this.hireDate = hireDate; }
 }
