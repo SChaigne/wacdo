@@ -147,22 +147,6 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <includes>-->
-<!--                        <include>**/*Test.java</include>-->
-<!--                    </includes>-->
-<!--                    <useSystemClassLoader>false</useSystemClassLoader>-->
-<!--                    <failIfNoTests>true</failIfNoTests>-->
-<!--                    <testFailureIgnore>false</testFailureIgnore>-->
-<!--                    <forkCount>1</forkCount>-->
-<!--                    <reuseForks>true</reuseForks>-->
-<!--                    <argLine>-Dspring.profiles.active=test</argLine>-->
-<!--                </configuration>-->
-
-<!--            </plugin>-->
         </plugins>
     </build>
 
